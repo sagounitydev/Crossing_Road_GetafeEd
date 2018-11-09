@@ -8,6 +8,7 @@ public class SaltaPollo : MonoBehaviour
     private Rigidbody rb;
     [SerializeField] int fuerza = 100;
     [SerializeField] Transform posPies;
+    [SerializeField] float distanciaDeteccion = 0.1f;
 
     // Use this for initialization
     void Start()
@@ -18,45 +19,30 @@ public class SaltaPollo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("s"))
+        if (Input.GetKeyDown("s") && EstoyEnSuelo())
         {
-            Collider[] cols = Physics.OverlapSphere(posPies.position, 10);
-            for (int i=0; i <cols.Length; i++)
-            {
-                Debug.Log("ESTOY TOCANDO UN" + i);
-            }
-
-            rb.AddForce(new Vector3 (1,1,0) * fuerza);
+            rb.AddForce(new Vector3 (2,2,0) * fuerza);
         }
-        else if (Input.GetKeyDown("w"))
+        else if (Input.GetKeyDown("w") && EstoyEnSuelo())
         {
-            Collider[] cols = Physics.OverlapSphere(posPies.position, 1f, LayerMask.NameToLayer("Terreno"));
-            for (int i = 0; i < cols.Length; i++)
-            {
-                Debug.Log("ESTOY TOCANDO UN" + i);
-            }
-
-            rb.AddForce(new Vector3(-1, 1, 0) * fuerza);
+            rb.AddForce(new Vector3(-2, 2, 0) * fuerza);
         }
-        else if (Input.GetKeyDown("d"))
+        else if (Input.GetKeyDown("d") && EstoyEnSuelo())
         {
-            Collider[] cols = Physics.OverlapSphere(posPies.position, 10);
-            for (int i = 0; i < cols.Length; i++)
-            {
-                Debug.Log("ESTOY TOCANDO UN" + i);
-            }
-
-            rb.AddForce(new Vector3(0, 1, 1) * fuerza);
+            rb.AddForce(new Vector3(0, 2, 2) * fuerza);
         }
-        else if (Input.GetKeyDown("a"))
+        else if (Input.GetKeyDown("a") && EstoyEnSuelo())
         {
-            Collider[] cols = Physics.OverlapSphere(posPies.position, 10);
-            for (int i = 0; i < cols.Length; i++)
-            {
-                Debug.Log("ESTOY TOCANDO UN" + i);
-            }
 
-            rb.AddForce(new Vector3(0, 1, -1) * fuerza);
+
+            rb.AddForce(new Vector3(0, 2, -2) * fuerza);
         }
+    }
+    private bool EstoyEnSuelo()
+    {
+        int layerIndex = LayerMask.GetMask("Terreno");
+        bool enSuelo = false;
+        enSuelo = Physics.CheckSphere(posPies.position, distanciaDeteccion, layerIndex);
+        return enSuelo;
     }
 }
